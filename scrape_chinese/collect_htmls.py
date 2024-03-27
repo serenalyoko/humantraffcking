@@ -4,13 +4,15 @@ import os
 
 
 def main():
-    directory_path = '/Users/siyizhou/Documents/ISI/humanTrafficking/pythonProject/scrape_chinese/all_links/'
+    current = os.getcwd()
+    directory_path =  current + '/scrape_chinese/all_links/'
+    print(directory_path)
     all_files = os.listdir(directory_path)
     file_names = [item for item in all_files if os.path.isfile(os.path.join(directory_path, item))]
     f = open("log.txt", "a")
     for n in file_names:
         print(n)
-        dir_name = "/Users/siyizhou/Documents/ISI/humanTrafficking/pythonProject/scrape_chinese/htmls/" + n.split(".")[0]
+        dir_name = current+ "/htmls/" + n.split(".")[0]
         df = pd.read_csv(directory_path+n)
         urls = df["url"]
         for url in urls:
