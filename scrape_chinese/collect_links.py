@@ -5,9 +5,8 @@ import utility
 
 def main():
     site_urls = [
-
-             "https://www.nychinaren.com",
-            "https://www.chineseinsfbay.com",
+        "https://www.chineseinsfbay.com"
+             #"https://www.nychinaren.com",
         # "https://www.seattlechinaren.com",
         #"https://www.chineseinla.com",
         # "https://www.dcchinaren.com",

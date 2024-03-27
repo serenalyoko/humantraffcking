@@ -82,7 +82,7 @@ def scrape_all_list_view_pages(domain, list_view_url, max_pages = 9999999):
     post_urls = []
     post_views = []
     post_titles = []
-    i = 0
+    i = 19230
     has_more_pages = True
     seg = domain.split(".")
     #fname = seg[1] + "_url.csv"
@@ -107,6 +107,7 @@ def scrape_all_list_view_pages(domain, list_view_url, max_pages = 9999999):
 def save_job_post_html(url, save_directory):
     soup = init_soup(url)
     fname = url.split("/")[5]
+    print(fname)
     current_dir = os.path.dirname(__file__)
 
     path = os.path.join(current_dir, save_directory)

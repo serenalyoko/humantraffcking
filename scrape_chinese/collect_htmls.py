@@ -2,16 +2,22 @@ import utility
 import pandas as pd
 import os
 
+
 def main():
-    directory_path = '/Users/siyizhou/Documents/ISI/humanTrafficking/pythonProject/scrape_chinese/all_links'
+    directory_path = '/Users/siyizhou/Documents/ISI/humanTrafficking/pythonProject/scrape_chinese/all_links/'
     all_files = os.listdir(directory_path)
     file_names = [item for item in all_files if os.path.isfile(os.path.join(directory_path, item))]
-
+    f = open("log.txt", "a")
     for n in file_names:
-        dir_name = n.split(".")[0]
-        df = pd.read_csv(n)
-        url = df["url"]
-        utility.save_job_post_html(url, dir_name)
+        print(n)
+        dir_name = "/Users/siyizhou/Documents/ISI/humanTrafficking/pythonProject/scrape_chinese/htmls/" + n.split(".")[0]
+        df = pd.read_csv(directory_path+n)
+        urls = df["url"]
+        for url in urls:
+            utility.save_job_post_html(url, dir_name)
+            line = url + "," + dir_name + "\n"
+            f.write(line)
+    f.close()
 
 
 if __name__ == "__main__":
