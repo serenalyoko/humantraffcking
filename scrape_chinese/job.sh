@@ -5,10 +5,10 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=1G
-#SBATCH --time=1:00:00
+#SBATCH --time=3:00:00
 
 module purge
 module load gcc/11.3.0
 module load python/3.9.12
 
-python collect_htmls.py
+python parse.py
