@@ -9,6 +9,7 @@ import difflib
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from time import sleep
+import random
 import codecs
 import os
 import re
@@ -35,6 +36,7 @@ def extract_emails(text):
     return matches
 
 def init_soup(url):
+    """
     chrome_options = Options()
     chrome_options.add_argument("--headless=new")
     driver = webdriver.Chrome(options=chrome_options)
@@ -45,6 +47,24 @@ def init_soup(url):
     sleep(1)
     page_source = driver.page_source
     return BeautifulSoup(page_source, 'html.parser')
+    """
+    # Define parameters provided by Brightdata
+    host = 'brd.superproxy.io'
+    port = 22225
+    username = 'brd-customer-hl_8ecbaf7f-zone-residential_proxy1'
+    password = 'bjjldl7xsgz2'
+    session_id = random.random()
+
+    # format your proxy
+    proxy_url = ('http://{}-session-{}:{}@{}:{}'.format(username, session_id,
+                                                        password, host, port))
+
+    # define your proxies in dictionary
+    proxies = {'http': proxy_url, 'https': proxy_url}
+
+    page_source = requests.get(url, timeout=2)
+    return BeautifulSoup(page_source.text, 'html.parser')
+
 
 def scrape_list_view_page(url):
     print(url)
@@ -99,8 +119,6 @@ def scrape_all_list_view_pages(domain, list_view_url, max_pages = 9999999):
         # urls, viewcounts, titles, has_more_pages = scrape_list_view_page(domain + list_view_url + str(i) + ".html", fname)
         # urls, viewcounts, titles, has_more_pages = scrape_list_view_page("https://www.dcchinaren.com/f/page_viewforum/f_29/start_3480.html")
 
-
-
     return post_urls, post_views, post_titles
 
 
@@ -109,7 +127,6 @@ def save_job_post_html(url, save_directory):
     fname = url.split("/")[5]
     print(fname)
     current_dir = os.path.dirname(__file__)
-
     path = os.path.join(current_dir, save_directory)
     if not os.path.exists(path):
         os.mkdir(path)
@@ -142,6 +159,19 @@ def collect_data_point(soup):
                 time_text = re.sub(r'\s*,\s*', ' ', time_text)
                 data["date_modified"] = time_text
 
+    user_name_div = soup.find('div', class_='user_name')
+    print(user_name_div)
+
+    # Check if the 'user_name' div is found
+    if user_name_div:
+        # Extract the text within the <span> tag of the 'user_name' div
+        author = user_name_div.find('span').text.strip()
+
+        # Extract the href attribute from the <a> tag within the 'user_name' div
+        a_href = user_name_div.find('a')['href']
+        data["author"] = author
+        data["author_profile"] = a_href
+
     all_spans = soup.select("div.post_body span:has(span)")
     for span in all_spans:
         text = span.get_text(strip=True)
@@ -153,6 +183,7 @@ def collect_data_point(soup):
     if len(custom_content):
         data["phone_numbers"] = extract_phone_numbers(custom_content[0].text)
         data["emails"] = extract_emails(custom_content[0].text)
+        data["job_descripton"] = custom_content[0].text
 
     return data
 
@@ -166,7 +197,7 @@ def scrape_job_post(url):
 def main():
     site_urls = [
              #"https://www.vegaschinaren.com",
-             "https://www.chineseinla.com",
+             "https://www.chineseinla.com"
              #"https://www.chineseinsfbay.com",
              #"https://www.nychinaren.com",
              #"https://www.seattlechinaren.com",

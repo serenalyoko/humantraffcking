@@ -5,7 +5,7 @@ import os
 
 def main():
     current = os.getcwd()
-    directory_path =  current + '/scrape_chinese/all_links/'
+    directory_path =  current + '/all_links/'
     f = open("log.txt", "a")
     f.write("current_path: ")
     f.write(directory_path)
@@ -14,6 +14,8 @@ def main():
     all_files = os.listdir(directory_path)
     file_names = [item for item in all_files if os.path.isfile(os.path.join(directory_path, item))]
     for n in file_names:
+        if n == ".DS_Store":
+            continue
         print(n)
         dir_name = current+ "/htmls/" + n.split(".")[0]
         df = pd.read_csv(directory_path+n)
