@@ -1,4 +1,6 @@
 # humantraffcking
+## Full Paper
+https://workshop-proceedings.icwsm.org/abstract.php?id=2026_04
 ## Data
 Large data files are not included in this repo due to GitHub's file size limits.
 Contact zhousiyi[at]usc[dot]edu to get:
